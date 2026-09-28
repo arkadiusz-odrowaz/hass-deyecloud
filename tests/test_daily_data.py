@@ -213,5 +213,59 @@ class OptimizerProductionTests(unittest.TestCase):
         self.assertEqual((record["today"], record["month"]), (0.0, 0.0))
 
 
+class OptimizerAveragePowerTests(unittest.TestCase):
+    """Average per-panel power from Production Today growth (issue #28)."""
+
+    DAY = "2026-09-28"
+    T0 = 1_790_000_000.0
+
+    def sample(self, previous, kwh, minutes, online=True, day=DAY):
+        record = DATA.optimizer_average_power(previous, day, kwh, self.T0 + minutes * 60, online)
+        return {"date": day, "today": kwh, **record}
+
+    def test_first_sample_has_no_value(self):
+        record = self.sample(None, 0.94, 0)
+        self.assertIsNone(record["power"])
+        self.assertEqual((record["power_since"], record["power_kwh"]), (self.T0, 0.94))
+
+    def test_growth_over_15_minutes(self):
+        first = self.sample(None, 0.94, 0)
+        second = self.sample(first, 1.04, 15)          # 0.1 kWh in 15 min
+        self.assertEqual(second["power"], 400.0)
+        self.assertEqual(second["power_since"], self.T0 + 15 * 60)
+
+    def test_slow_panel_averages_over_the_open_window(self):
+        first = self.sample(None, 0.94, 0)
+        flat = self.sample(first, 0.94, 15)            # below one 0.01 kWh step
+        self.assertIsNone(flat["power"])
+        self.assertEqual(flat["power_since"], self.T0)  # window stays open
+        grown = self.sample(flat, 0.95, 30)            # 0.01 kWh in 30 min
+        self.assertEqual(grown["power"], 20.0)
+
+    def test_keeps_last_value_while_flat(self):
+        first = self.sample(None, 0.94, 0)
+        second = self.sample(first, 1.04, 15)
+        flat = self.sample(second, 1.04, 30)
+        self.assertEqual(flat["power"], 400.0)
+
+    def test_idle_for_an_hour_is_zero(self):
+        first = self.sample(None, 0.94, 0)
+        second = self.sample(first, 1.04, 15)
+        idle = self.sample(second, 1.04, 15 + 60)
+        self.assertEqual(idle["power"], 0.0)
+
+    def test_offline_is_zero(self):
+        first = self.sample(None, 0.94, 0)
+        second = self.sample(first, 1.04, 15)
+        self.assertEqual(self.sample(second, 1.04, 20, online=False)["power"], 0.0)
+        self.assertEqual(self.sample(None, 0.0, 0, online=False)["power"], 0.0)
+
+    def test_new_day_restarts_the_window(self):
+        evening = self.sample(self.sample(None, 2.5, 0), 2.6, 15)
+        record = self.sample(evening, 0.0, 600, day="2026-09-29")
+        self.assertIsNone(record["power"])
+        self.assertEqual(record["power_kwh"], 0.0)
+
+
 if __name__ == "__main__":
     unittest.main()

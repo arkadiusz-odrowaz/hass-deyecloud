@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.6.1
+
+- Optimizers (issue #28): new **Average Power** sensor (W) per optimizer. The OpenAPI still has no live per-panel power (`/device/latest`, `/device/measurePoints` and minute history return nothing / "device not supported" for optimizers), so the power is averaged from the growth of Production Today between refreshes.
+- Each time Production Today grows, the sensor shows the energy added divided by the time since the previous growth. While it does not grow, the window stays open, so a weak panel is averaged over a longer time instead of dropping to 0 W between two 0.01 kWh steps. It reads 0 W when the optimizer is offline or has not produced for an hour; the `averaging_since` attribute shows the start of the current window.
+- Production is reported in 0.01 kWh steps and refreshed every 15 minutes, so the value is a 15-minute (or longer) average, accurate to roughly ±40 W: good for comparing panels, not an instantaneous reading.
+
 ## 2.6.0
 
 - Optimizers (issue #28): each optimizer in the station now gets its own device, linked to the station, with **Production Today** and **Production This Month** sensors (kWh, `total_increasing`), so per-panel output can be compared and added to the Energy Dashboard.

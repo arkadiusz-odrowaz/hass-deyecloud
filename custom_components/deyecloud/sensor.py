@@ -39,6 +39,7 @@ from .data import (
     batched_device_serials,
     derive_today_from_month as _derive_today_from_month,
     empty_daily_record as _empty_daily_record,
+    optimizer_average_power as _optimizer_average_power,
     optimizer_production as _optimizer_production,
     should_reject_stale_today as _should_reject_stale_today,
     unique_keys as _unique_keys,
@@ -1105,8 +1106,12 @@ class DeyeCloudCoordinator(DataUpdateCoordinator):
             if not j.get("success"):
                 _LOGGER.debug("Optimizer history for %s failed: %s", sn, j.get("msg"))
                 continue
-            record = _optimizer_production(
-                j.get("dataList"), today.isoformat(), data["optimizers"].get(sn)
+            previous = data["optimizers"].get(sn)
+            record = _optimizer_production(j.get("dataList"), today.isoformat(), previous)
+            # No live power in the OpenAPI: average it from Production growth.
+            online = None if item.get("connectStatus") is None else item.get("connectStatus") == 1
+            record.update(
+                _optimizer_average_power(previous, record["date"], record["today"], now.timestamp(), online)
             )
             record.update(
                 device_id=item.get("deviceId"),
@@ -1369,6 +1374,11 @@ class DeyeCloudSensor(CoordinatorEntity, SensorEntity):
             for key in ("date", "device_id", "connect_status", "collection_time"):
                 if record.get(key) is not None:
                     attrs[key] = record[key]
+            if self._metric_key == "power" and record.get("power_since") is not None:
+                # Start of the window the next average will cover.
+                attrs["averaging_since"] = dt_util.as_local(
+                    dt_util.utc_from_timestamp(record["power_since"])
+                ).isoformat()
 
         return attrs
 
@@ -1595,6 +1605,21 @@ async def async_setup_entry(
                     device_sn=str(device_sn),
                     device_type="OPTIMIZER",
                 ))
+            # Average power since Production last grew (the OpenAPI has no live
+            # per-panel power): 0.01 kWh steps, so roughly +/-40 W over 15 min.
+            entities.append(DeyeCloudSensor(
+                coordinator=coordinator,
+                sensor_type="optimizer",
+                name="Average Power",
+                unique_id=f"optimizer_{device_sn}_average_power",
+                unit="W",
+                device_class="power",
+                state_class="measurement",
+                station_id=station_id,
+                metric_key="power",
+                device_sn=str(device_sn),
+                device_type="OPTIMIZER",
+            ))
 
     async_add_entities(entities)
     _LOGGER.info("DeyeCloud integration setup completed with %d sensors", len(entities))

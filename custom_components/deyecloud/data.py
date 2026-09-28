@@ -184,3 +184,45 @@ def optimizer_production(
     if previous and str(previous.get("date", ""))[:7] == day[:7]:
         month = max(month, previous.get("month") or 0.0)
     return {"date": day, "today": today, "month": month}
+
+
+# An optimizer whose production has not moved for this long is idle (night,
+# shade, or it stopped reporting): its average power is 0 W.
+OPTIMIZER_IDLE_SECONDS = 3600
+
+
+def optimizer_average_power(
+    previous: dict | None,
+    day: str,
+    today_kwh: float,
+    now_ts: float,
+    online: bool | None = None,
+) -> dict:
+    """Average power (W) of one optimizer, from its Production Today (issue #28).
+
+    The OpenAPI gives optimizers only a daily Production (kWh, 0.01 kWh
+    steps), no live power. Each time that value grows, the energy added since
+    the previous growth divided by the time between the two samples is the
+    average power over that window. While it does not grow, the window stays
+    open, so a slow panel is averaged over a longer time instead of reading
+    0 W between two 0.01 kWh steps. It reads 0 W once the optimizer is
+    offline or has not produced for OPTIMIZER_IDLE_SECONDS.
+
+    Returns the fields to merge into the optimizer record: `power` (W or
+    None while unknown), `power_since` / `power_kwh` (open window start).
+    """
+    prev = previous or {}
+    since, base = prev.get("power_since"), prev.get("power_kwh")
+    if prev.get("date") != day or since is None or base is None:
+        # First sample, or a new plant day: start a window, no value yet.
+        return {"power": 0.0 if online is False else None, "power_since": now_ts, "power_kwh": today_kwh}
+
+    elapsed = now_ts - since
+    added = today_kwh - base
+    if added > _FLOAT_EPSILON and elapsed > 0:
+        return {"power": round(added * 1000 * 3600 / elapsed, 1), "power_since": now_ts, "power_kwh": today_kwh}
+
+    power = prev.get("power")
+    if online is False or elapsed >= OPTIMIZER_IDLE_SECONDS:
+        power = 0.0
+    return {"power": power, "power_since": since, "power_kwh": base}
