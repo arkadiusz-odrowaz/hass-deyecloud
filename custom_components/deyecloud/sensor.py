@@ -1441,6 +1441,8 @@ class DeyeCloudSensor(CoordinatorEntity, SensorEntity):
 
         if self._device_sn:
             attrs["device_sn"] = self._device_sn
+        if self._device_key:
+            attrs["device_key"] = self._device_key
 
         if self._sensor_type == "optimizer" and self._station_id:
             record = (
