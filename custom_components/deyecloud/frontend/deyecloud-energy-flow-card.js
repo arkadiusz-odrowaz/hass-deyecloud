@@ -1,4 +1,4 @@
-const CARD_VERSION = "2.8.1";
+const CARD_VERSION = "2.8.2";
 const CARD_TAG = "deyecloud-energy-flow-card-v3";
 const LEGACY_CARD_TAG = "deyecloud-energy-flow-card";
 const EDITOR_TAG = "deyecloud-energy-flow-card-v3-editor";
@@ -4276,22 +4276,58 @@ class DeyeCloudEnergyFlowCardEditor extends HTMLElement {
   }
 }
 
-if (!customElements.get(CARD_TAG)) {
-  customElements.define(CARD_TAG, DeyeCloudEnergyFlowCard);
+// Home Assistant can load two copies of this module: the one the
+// integration adds and a dashboard resource, possibly with an older cached
+// version. Custom elements cannot be redefined, so a newer copy moves its
+// methods onto the class that was registered first; existing cards pick
+// them up on their next update.
+function isNewerCardVersion(version, other) {
+  const a = String(version).split(".").map(Number);
+  const b = String(other || "0").split(".").map(Number);
+  for (let i = 0; i < 3; i++) {
+    if ((a[i] || 0) !== (b[i] || 0)) return (a[i] || 0) > (b[i] || 0);
+  }
+  return false;
 }
-if (!customElements.get(EDITOR_TAG)) {
-  customElements.define(EDITOR_TAG, DeyeCloudEnergyFlowCardEditor);
+
+function adoptCardClass(tag, Fresh) {
+  const Existing = customElements.get(tag);
+  if (!Existing) {
+    customElements.define(tag, Fresh);
+    return "defined";
+  }
+  if (Existing === Fresh || !isNewerCardVersion(CARD_VERSION, Existing.prototype._deyeCardVersion)) {
+    return "kept";
+  }
+  for (const name of Object.getOwnPropertyNames(Fresh.prototype)) {
+    if (name !== "constructor") {
+      Object.defineProperty(Existing.prototype, name, Object.getOwnPropertyDescriptor(Fresh.prototype, name));
+    }
+  }
+  for (const name of ["getStubConfig", "getConfigElement"]) {
+    if (Fresh[name]) Existing[name] = Fresh[name];
+  }
+  return "upgraded";
 }
+
+DeyeCloudEnergyFlowCard.prototype._deyeCardVersion = CARD_VERSION;
+DeyeCloudEnergyFlowCardEditor.prototype._deyeCardVersion = CARD_VERSION;
+const cardRegistration = adoptCardClass(CARD_TAG, DeyeCloudEnergyFlowCard);
+adoptCardClass(EDITOR_TAG, DeyeCloudEnergyFlowCardEditor);
 
 // Backward compatibility for dashboards that already use
 // custom:deyecloud-energy-flow-card. A separate subclass is required because
 // the Custom Elements specification does not allow registering one constructor
 // under two tag names.
-if (!customElements.get(LEGACY_CARD_TAG)) {
+if (customElements.get(LEGACY_CARD_TAG)) {
+  adoptCardClass(LEGACY_CARD_TAG, DeyeCloudEnergyFlowCard);
+} else {
   class DeyeCloudEnergyFlowCardLegacy extends DeyeCloudEnergyFlowCard {}
   customElements.define(LEGACY_CARD_TAG, DeyeCloudEnergyFlowCardLegacy);
 }
-if (!customElements.get(LEGACY_EDITOR_TAG)) {
+if (customElements.get(LEGACY_EDITOR_TAG)) {
+  adoptCardClass(LEGACY_EDITOR_TAG, DeyeCloudEnergyFlowCardEditor);
+} else {
   class DeyeCloudEnergyFlowCardEditorLegacy extends DeyeCloudEnergyFlowCardEditor {}
   customElements.define(LEGACY_EDITOR_TAG, DeyeCloudEnergyFlowCardEditorLegacy);
 }
@@ -4329,7 +4365,9 @@ for (let index = customCardsRegistry.length - 1; index >= 0; index -= 1) {
   }
 }
 
-if (customElements.get(CARD_TAG)) {
+if (customCardsRegistry.some((card) => card.type === CARD_TAG)) {
+  // Registered by another copy of this module.
+} else if (customElements.get(CARD_TAG)) {
   customCardsRegistry.push(cardMetadata);
 } else {
   console.error(
@@ -4338,7 +4376,7 @@ if (customElements.get(CARD_TAG)) {
 }
 
 console.info(
-  `%c DeyeCloud Energy Flow Card %c v${CARD_VERSION} `,
+  `%c DeyeCloud Energy Flow Card %c v${CARD_VERSION}${cardRegistration === "upgraded" ? " (replaced an older copy)" : cardRegistration === "kept" ? " (newer copy already active)" : ""} `,
   "color: white; background: #1c9b70; font-weight: 700; padding: 3px 6px; border-radius: 4px 0 0 4px;",
   "color: #1c9b70; background: #e8f7f2; font-weight: 700; padding: 3px 6px; border-radius: 0 4px 4px 0;"
 );

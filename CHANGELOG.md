@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.8.2
+
+- When the browser loads two copies of the Energy Flow card (the one the integration adds and a dashboard resource, one of them an older cached version), the newer copy now takes over the card that was registered first instead of being ignored. Cards already on screen switch to the new code on their next update. The card picker lists the card once.
+
 ## 2.8.1
 
 - A dashboard resource added by hand for the card (`/deyecloud/frontend/deyecloud-energy-flow-card.js?v=…`) is updated to the current version when Home Assistant starts, so the browser no longer keeps running the cached old card after an update. No resource is created; YAML-mode dashboards are left alone.
