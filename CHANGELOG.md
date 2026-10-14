@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.7.2
+
+- Fix the dashboard loading an old version of the Energy Flow card after an update. Home Assistant serves a `.gz` copy of the card instead of the file itself when one exists, and a copy left over from an older install kept serving the old card. Out-of-date `.gz` copies in the card folder are now removed at startup.
+
 ## 2.7.1
 
 - Polish translation for the Energy Flow card and the setup/options forms (`pl`), also selectable as card language.
