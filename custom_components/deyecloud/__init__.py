@@ -11,6 +11,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.event import async_track_time_interval
+from homeassistant.helpers.start import async_at_started
 
 from .const import CONF_ENABLE_CONTROL, DOMAIN
 from .control import DeyeCloudControlError, DeyeCloudController
@@ -25,7 +26,7 @@ CONTROL_PLATFORMS: list[Platform] = [Platform.SWITCH, Platform.SELECT, Platform.
 # Each read is a command delivered to the inverter, so keep it infrequent.
 SETTINGS_REFRESH_INTERVAL = timedelta(minutes=30)
 
-CARD_VERSION = "2.8.0"
+CARD_VERSION = "2.8.1"
 CARD_STATIC_URL = "/deyecloud/frontend"
 CARD_MODULE_URL = (
     f"{CARD_STATIC_URL}/deyecloud-energy-flow-card.js?v={CARD_VERSION}"
@@ -55,6 +56,32 @@ def _remove_stale_precompressed(frontend_dir: Path) -> None:
             _LOGGER.warning("Could not remove frontend file %s: %s", compressed.name, exc)
 
 
+async def _async_update_card_resource(hass: HomeAssistant) -> None:
+    """Point a dashboard resource for the card at the current version.
+
+    The card is also loaded automatically, but a resource added by hand
+    keeps its old ?v= and the browser keeps running that cached copy.
+    Only an existing resource is updated; none is created.
+    """
+    lovelace = hass.data.get("lovelace")
+    resources = getattr(lovelace, "resources", None)
+    if resources is None and isinstance(lovelace, dict):
+        resources = lovelace.get("resources")
+    if resources is None or not hasattr(resources, "async_update_item"):
+        return  # YAML-mode dashboards: resources cannot be edited.
+    if not getattr(resources, "loaded", True):
+        await resources.async_load()
+        resources.loaded = True
+    card_path = f"{CARD_STATIC_URL}/deyecloud-energy-flow-card.js"
+    for item in resources.async_items():
+        url = str(item.get("url", ""))
+        if url.split("?", 1)[0] == card_path and url != CARD_MODULE_URL:
+            await resources.async_update_item(
+                item["id"], {"res_type": "module", "url": CARD_MODULE_URL}
+            )
+            _LOGGER.info("Updated dashboard resource %s to %s", url, CARD_MODULE_URL)
+
+
 async def _async_register_frontend(hass: HomeAssistant) -> None:
     """Serve and automatically load the bundled Lovelace card."""
     domain_data = hass.data.setdefault(DOMAIN, {})
@@ -74,6 +101,14 @@ async def _async_register_frontend(hass: HomeAssistant) -> None:
     )
     add_extra_js_url(hass, CARD_MODULE_URL)
     domain_data[DATA_FRONTEND_MODULE_URL] = CARD_MODULE_URL
+
+    async def _update_resource(_hass: HomeAssistant) -> None:
+        try:
+            await _async_update_card_resource(hass)
+        except Exception as exc:  # noqa: BLE001 - never block setup on this
+            _LOGGER.debug("Could not update the card dashboard resource: %s", exc)
+
+    async_at_started(hass, _update_resource)
     _LOGGER.info(
         "Registered bundled DeyeCloud Energy Flow card resource: %s",
         CARD_MODULE_URL,

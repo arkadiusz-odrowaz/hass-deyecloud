@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.8.1
+
+- A dashboard resource added by hand for the card (`/deyecloud/frontend/deyecloud-energy-flow-card.js?v=…`) is updated to the current version when Home Assistant starts, so the browser no longer keeps running the cached old card after an update. No resource is created; YAML-mode dashboards are left alone.
+
 ## 2.8.0
 
 - Energy Flow card: **chart** above the energy tiles that follows the period tabs. 24H and 3D show power (PV, home, battery, grid, SOC) from the recorder history; 7D, Month and All show daily or monthly energy bars from the long-term statistics of the Today sensors. Hover or tap for values. No extra DeyeCloud requests.
