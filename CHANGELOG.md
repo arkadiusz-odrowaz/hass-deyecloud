@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.7.0
+
+- Energy Flow card: the energy section gets period tabs: **24H**, **3D**, **7D**, **Month** and **All**. 3D adds up Today, Yesterday and Day Before; Month uses the current-month sensors.
+- New sensors per station for the six energy metrics (solar, consumption, grid import/export, battery charge/discharge):
+  - **Last 7 Days**: today plus the six previous days. Four extra closed days are fetched with one daily request, once a day (retried hourly while a day is missing). The sensor stays Unknown until all seven days are known, so a partial week never reads too low.
+  - **Total**: sum of the monthly history since the configured start month (the `since` attribute shows the first month).
+  - Neither has a state class, so they are not offered as Energy Dashboard sources.
+- `energy_period` card option (`today`, `3d`, `7d`, `month`, `all`) picks the tab shown when the dashboard opens.
+
 ## 2.6.2
 
 - Energy Flow card: battery status now follows the signed **Battery Power** when the station leaves Battery Charge/Discharge Power empty or 0. A negative value shows as **Charging**, a positive one as **Discharging**, with the matching flow animation, instead of a positive value labelled Idle.
