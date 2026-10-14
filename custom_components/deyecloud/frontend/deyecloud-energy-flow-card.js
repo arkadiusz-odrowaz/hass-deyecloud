@@ -1,4 +1,4 @@
-const CARD_VERSION = "2.7.2";
+const CARD_VERSION = "2.7.3";
 const CARD_TAG = "deyecloud-energy-flow-card-v3";
 const LEGACY_CARD_TAG = "deyecloud-energy-flow-card";
 const EDITOR_TAG = "deyecloud-energy-flow-card-v3-editor";
@@ -1180,22 +1180,22 @@ class DeyeCloudEnergyFlowCard extends HTMLElement {
         <section class="diagram-stage" aria-label="${escapeHtml(t.diagramLabel)}">
           <div class="ambient ambient-one"></div>
           <div class="ambient ambient-two"></div>
-          <svg class="flow-svg" viewBox="0 0 1000 640" preserveAspectRatio="none" aria-hidden="true">
-            <path class="flow-base" d="M500 120 C500 160 500 190 500 238" />
-            <path class="flow-base" d="M232 320 C290 320 336 320 392 320" />
-            <path class="flow-base" d="M608 320 C664 320 710 320 768 320" />
-            <path class="flow-base" d="M500 402 C500 442 500 478 500 520" />
+          <svg class="flow-svg" aria-hidden="true">
+            <path class="flow-base" data-link="solar" />
+            <path class="flow-base" data-link="battery" />
+            <path class="flow-base" data-link="grid" />
+            <path class="flow-base" data-link="load" />
 
-            ${solarActive ? '<path class="flow-line solar-flow" d="M500 120 C500 160 500 190 500 238" />' : ""}
-            ${batteryChargeActive || batteryDischargeActive ? `<path class="flow-line battery-flow ${batteryChargeActive ? "reverse" : ""}" d="M232 320 C290 320 336 320 392 320" />` : ""}
-            ${gridImportActive || gridExportActive ? `<path class="flow-line grid-flow ${gridImportActive ? "reverse" : ""}" d="M608 320 C664 320 710 320 768 320" />` : ""}
-            ${loadActive ? '<path class="flow-line load-flow" d="M500 402 C500 442 500 478 500 520" />' : ""}
+            ${solarActive ? '<path class="flow-line solar-flow" data-link="solar" />' : ""}
+            ${batteryChargeActive || batteryDischargeActive ? `<path class="flow-line battery-flow ${batteryChargeActive ? "reverse" : ""}" data-link="battery" />` : ""}
+            ${gridImportActive || gridExportActive ? `<path class="flow-line grid-flow ${gridImportActive ? "reverse" : ""}" data-link="grid" />` : ""}
+            ${loadActive ? '<path class="flow-line load-flow" data-link="load" />' : ""}
           </svg>
 
-          ${solarActive ? `<span class="flow-label solar-label">${escapeHtml(formatPower(values.solar, locale))}</span>` : ""}
-          ${(batteryChargeActive || batteryDischargeActive) ? `<span class="flow-label battery-label">${escapeHtml(formatPower(batteryDisplayPower, locale))}</span>` : ""}
-          ${(gridImportActive || gridExportActive) ? `<span class="flow-label grid-label">${escapeHtml(formatPower(gridDisplayPower, locale))}</span>` : ""}
-          ${loadActive ? `<span class="flow-label load-label">${escapeHtml(formatPower(values.load, locale))}</span>` : ""}
+          ${solarActive ? `<span class="flow-label solar-label" data-link="solar">${escapeHtml(formatPower(values.solar, locale))}</span>` : ""}
+          ${(batteryChargeActive || batteryDischargeActive) ? `<span class="flow-label battery-label" data-link="battery">${escapeHtml(formatPower(batteryDisplayPower, locale))}</span>` : ""}
+          ${(gridImportActive || gridExportActive) ? `<span class="flow-label grid-label" data-link="grid">${escapeHtml(formatPower(gridDisplayPower, locale))}</span>` : ""}
+          ${loadActive ? `<span class="flow-label load-label" data-link="load">${escapeHtml(formatPower(values.load, locale))}</span>` : ""}
 
           <div class="diagram-grid">
             <div class="node-slot solar-slot">
@@ -1326,11 +1326,80 @@ class DeyeCloudEnergyFlowCard extends HTMLElement {
       element.addEventListener("click", () => this._moreInfo(entityId));
     });
     this._wireControls();
+    this._observeDiagram();
 
     } catch (error) {
       console.error("DeyeCloud Energy Flow Card render error", error);
       this._renderError(error);
     }
+  }
+
+  disconnectedCallback() {
+    this._resizeObserver?.disconnect();
+  }
+
+  // The nodes sit in a responsive grid, so draw each flow line between the
+  // real edges of its two nodes instead of fixed diagram coordinates.
+  _observeDiagram() {
+    const stage = this.shadowRoot.querySelector(".diagram-stage");
+    if (!this._resizeObserver) {
+      this._resizeObserver = new ResizeObserver(() => this._layoutFlows());
+    }
+    this._resizeObserver.disconnect();
+    if (!stage) return;
+    this._resizeObserver.observe(stage);
+    stage.querySelectorAll(".flow-node").forEach((node) => this._resizeObserver.observe(node));
+    this._layoutFlows();
+  }
+
+  _layoutFlows() {
+    const stage = this.shadowRoot?.querySelector(".diagram-stage");
+    const svg = stage?.querySelector(".flow-svg");
+    if (!svg) return;
+    const box = stage.getBoundingClientRect();
+    if (!box.width || !box.height) return;
+    const rect = (selector) => {
+      const r = stage.querySelector(selector)?.getBoundingClientRect();
+      if (!r) return null;
+      return {
+        left: r.left - box.left,
+        right: r.right - box.left,
+        top: r.top - box.top,
+        bottom: r.bottom - box.top,
+        cx: (r.left + r.right) / 2 - box.left,
+        cy: (r.top + r.bottom) / 2 - box.top,
+      };
+    };
+    const inverter = rect(".inverter-node");
+    if (!inverter) return;
+    const solar = rect(".solar-node");
+    const battery = rect(".battery-node");
+    const grid = rect(".grid-node");
+    const home = rect(".home-node");
+    // Same start/end order as the animation direction: source to inverter,
+    // inverter to sink; "reverse" flips battery charging and grid import.
+    const links = {
+      solar: solar && [inverter.cx, solar.bottom, inverter.cx, inverter.top],
+      battery: battery && [battery.right, inverter.cy, inverter.left, inverter.cy],
+      grid: grid && [inverter.right, inverter.cy, grid.left, inverter.cy],
+      load: home && [inverter.cx, inverter.bottom, inverter.cx, home.top],
+    };
+    svg.setAttribute("viewBox", `0 0 ${box.width} ${box.height}`);
+    stage.querySelectorAll("[data-link]").forEach((element) => {
+      const link = links[element.dataset.link];
+      if (!link) return;
+      const [x1, y1, x2, y2] = link.map((value) => Math.round(value * 10) / 10);
+      if (element instanceof SVGElement) {
+        element.setAttribute("d", `M${x1} ${y1} L${x2} ${y2}`);
+      } else {
+        element.style.left = `${(x1 + x2) / 2}px`;
+        element.style.top = `${(y1 + y2) / 2}px`;
+        // Hide a value label that would cover the nodes on a short line.
+        const length = Math.hypot(x2 - x1, y2 - y1);
+        const size = x1 === x2 ? element.offsetHeight : element.offsetWidth;
+        element.style.visibility = length >= size + 12 ? "" : "hidden";
+      }
+    });
   }
 
   _renderError(error) {
@@ -2319,7 +2388,7 @@ class DeyeCloudEnergyFlowCard extends HTMLElement {
           .diagram-stage { aspect-ratio: 1 / 1.02; min-height: 370px; }
           .diagram-grid {
             grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr) minmax(0, 1fr);
-            gap: 10px;
+            gap: 10px 18px;
           }
           .flow-node { min-height: 88px; }
           .node-copy strong { font-size: 14px; }
@@ -2371,7 +2440,7 @@ class DeyeCloudEnergyFlowCard extends HTMLElement {
             inset: 14px 10px;
             grid-template-columns: 1fr 1fr 1fr;
             grid-template-rows: auto auto auto;
-            gap: 10px 8px;
+            gap: 10px 18px;
           }
           /* Stack icon above text so labels keep one line in narrow cards. */
           .flow-node {
