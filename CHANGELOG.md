@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.8.0
+
+- Energy Flow card: **chart** above the energy tiles that follows the period tabs. 24H and 3D show power (PV, home, battery, grid, SOC) from the recorder history; 7D, Month and All show daily or monthly energy bars from the long-term statistics of the Today sensors. Hover or tap for values. No extra DeyeCloud requests.
+- **Period summary**: autarky, self-consumption, savings (`price_import`, `price_export`, `currency`), avoided CO2 (`co2_factor`) and specific yield (`pv_capacity`) for the selected period.
+- **Battery forecast** (`battery_capacity`, `battery_min_soc`): time until full or until the reserve, with the stored energy.
+- **Inverter details**: tapping the inverter node opens PV strings, temperatures, battery and grid readings. Inverter sensors now carry a `device_key` attribute for this.
+- **Panels**: optimizer tiles with today's production and average power; the weakest panel is highlighted below 85% of the median.
+- All new options are in the visual editor; translations for every card language.
+
 ## 2.7.3
 
 - Energy Flow card: the flow lines are drawn between the real edges of the nodes and follow the card when it resizes. They used fixed diagram coordinates, so at many card widths they ran into the battery and grid nodes.

@@ -73,7 +73,24 @@ energy_period: today       # today | 3d | 7d | month | all (default tab)
 show_efficiency: true
 animation: true
 show_controls: true      # inverter controls, when remote control is enabled
+show_chart: true         # power / energy chart in the energy section
+show_panels: true        # optimizer tiles, when the station has optimizers
+battery_capacity: 23.5   # kWh, enables the battery forecast
+battery_min_soc: 10      # %, reserve used for "lasts until"
+pv_capacity: 8           # kWp, enables the specific yield (kWh/kWp)
+price_import: 1.10       # per kWh, enables savings
+price_export: 0.30       # per kWh exported (optional)
+currency: zł             # optional; defaults to the card language's currency
+co2_factor: 0.7          # kg CO2 per grid kWh (default 0.5)
 ```
+
+Extra sections:
+
+- **Chart** above the energy tiles, following the period tabs: power over the day for 24H and 3D (PV, home, battery, grid and SOC, from Home Assistant's recorder history) and daily or monthly energy bars for 7D, Month and All (from the long-term statistics of the Today sensors). Hover or tap for values. No extra DeyeCloud requests.
+- **Period summary** under the tiles: autarky, self-consumption, savings, avoided CO2 and specific yield for the selected period.
+- **Battery forecast** in the efficiency section: time until full while charging, time until the reserve while discharging.
+- **Inverter details**: tap the inverter node for PV string voltage/current/power, temperatures, battery and grid readings.
+- **Panels**: one tile per optimizer with today's production and average power; the weakest panel is highlighted when it is below 85% of the median.
 
 The card automatically uses the integration's station sensors for:
 

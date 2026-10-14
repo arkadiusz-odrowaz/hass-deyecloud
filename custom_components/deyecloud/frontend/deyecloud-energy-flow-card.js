@@ -1,4 +1,4 @@
-const CARD_VERSION = "2.7.3";
+const CARD_VERSION = "2.8.0";
 const CARD_TAG = "deyecloud-energy-flow-card-v3";
 const LEGACY_CARD_TAG = "deyecloud-energy-flow-card";
 const EDITOR_TAG = "deyecloud-energy-flow-card-v3-editor";
@@ -559,6 +559,365 @@ const STRINGS = {
   },
 };
 
+// Strings for the chart, period summary, battery forecast, inverter details
+// and panel sections. English fills any key a language does not define.
+const INSIGHT_STRINGS = {
+  en: {
+    currency: "€",
+    hourShort: "h",
+    minShort: "min",
+    dayShort: "d",
+    legendPv: "PV",
+    legendLoad: "Home",
+    legendBattery: "Battery",
+    legendGrid: "Grid",
+    legendSoc: "SOC",
+    chartLoading: "Loading history…",
+    chartEmpty: "No history for this period yet",
+    chartError: "History is not available",
+    chartPowerHint: "Battery: up = discharging · Grid: up = import",
+    autarky: "Autarky",
+    selfUse: "Self-consumption",
+    savings: "Savings",
+    co2: "CO₂ avoided",
+    specificYield: "Yield",
+    batteryForecast: "Battery forecast",
+    fullIn: "Full in {d}",
+    fullAt: "about {time}",
+    lastsFor: "Lasts {d}",
+    lastsUntil: "until about {time} (to {soc}%)",
+    batteryHolding: "Holding steady",
+    storedOf: "{kwh} of {cap}",
+    inverterDetails: "Inverter details",
+    pvStrings: "PV strings",
+    stringN: "String {n}",
+    temperatures: "Temperatures",
+    batteryDetails: "Battery",
+    gridDetails: "Grid",
+    noDetails: "The inverter reports no matching measurements.",
+    close: "Close",
+    panelsTitle: "Panels",
+    panelsHint: "Optimizer production today",
+    panelAvg: "Average {kwh} per panel",
+    panelWeak: "Weakest: {name} at {pct}% of the median",
+    panelsEven: "All panels within 15% of the median",
+    editorBatteryCapacity: "Battery capacity (kWh)",
+    editorBatteryMinSoc: "Battery reserve (%)",
+    editorPvCapacity: "PV size (kWp)",
+    editorPriceImport: "Import price per kWh",
+    editorPriceExport: "Export price per kWh",
+    editorCurrency: "Currency",
+    editorCo2: "Grid CO₂ (kg per kWh)",
+    editorChart: "Show chart",
+    editorPanels: "Show panels",
+  },
+  pl: {
+    currency: "zł",
+    legendLoad: "Dom",
+    legendBattery: "Bateria",
+    legendGrid: "Sieć",
+    chartLoading: "Wczytywanie historii…",
+    chartEmpty: "Brak historii dla tego okresu",
+    chartError: "Historia jest niedostępna",
+    chartPowerHint: "Bateria: w górę = rozładowanie · Sieć: w górę = pobór",
+    autarky: "Autarkia",
+    selfUse: "Autokonsumpcja",
+    savings: "Oszczędność",
+    co2: "Uniknięte CO₂",
+    specificYield: "Uzysk",
+    batteryForecast: "Prognoza magazynu",
+    fullIn: "Pełny za {d}",
+    fullAt: "ok. {time}",
+    lastsFor: "Wystarczy na {d}",
+    lastsUntil: "do ok. {time} (do {soc}%)",
+    batteryHolding: "Bez zmian",
+    storedOf: "{kwh} z {cap}",
+    inverterDetails: "Szczegóły falownika",
+    pvStrings: "Stringi PV",
+    temperatures: "Temperatury",
+    batteryDetails: "Bateria",
+    gridDetails: "Sieć",
+    noDetails: "Falownik nie raportuje pasujących pomiarów.",
+    close: "Zamknij",
+    panelsTitle: "Panele",
+    panelsHint: "Produkcja optymalizatorów dziś",
+    panelAvg: "Średnio {kwh} na panel",
+    panelWeak: "Najsłabszy: {name}, {pct}% mediany",
+    panelsEven: "Wszystkie panele w granicach 15% mediany",
+    editorBatteryCapacity: "Pojemność magazynu (kWh)",
+    editorBatteryMinSoc: "Rezerwa magazynu (%)",
+    editorPvCapacity: "Moc instalacji PV (kWp)",
+    editorPriceImport: "Cena zakupu za kWh",
+    editorPriceExport: "Cena sprzedaży za kWh",
+    editorCurrency: "Waluta",
+    editorCo2: "CO₂ sieci (kg na kWh)",
+    editorChart: "Pokaż wykres",
+    editorPanels: "Pokaż panele",
+  },
+  es: {
+    legendLoad: "Casa",
+    legendBattery: "Batería",
+    legendGrid: "Red",
+    chartLoading: "Cargando historial…",
+    chartEmpty: "Aún no hay historial para este periodo",
+    chartError: "El historial no está disponible",
+    chartPowerHint: "Batería: arriba = descarga · Red: arriba = importación",
+    autarky: "Autarquía",
+    selfUse: "Autoconsumo",
+    savings: "Ahorro",
+    co2: "CO₂ evitado",
+    specificYield: "Rendimiento",
+    batteryForecast: "Previsión de batería",
+    fullIn: "Llena en {d}",
+    fullAt: "hacia las {time}",
+    lastsFor: "Dura {d}",
+    lastsUntil: "hasta las {time} aprox. (al {soc}%)",
+    batteryHolding: "Estable",
+    storedOf: "{kwh} de {cap}",
+    inverterDetails: "Detalles del inversor",
+    pvStrings: "Strings FV",
+    temperatures: "Temperaturas",
+    batteryDetails: "Batería",
+    gridDetails: "Red",
+    noDetails: "El inversor no informa mediciones coincidentes.",
+    close: "Cerrar",
+    panelsTitle: "Paneles",
+    panelsHint: "Producción de optimizadores hoy",
+    panelAvg: "Media {kwh} por panel",
+    panelWeak: "El más débil: {name}, {pct}% de la mediana",
+    panelsEven: "Todos los paneles dentro del 15% de la mediana",
+    editorBatteryCapacity: "Capacidad de la batería (kWh)",
+    editorBatteryMinSoc: "Reserva de la batería (%)",
+    editorPvCapacity: "Potencia FV (kWp)",
+    editorPriceImport: "Precio de compra por kWh",
+    editorPriceExport: "Precio de venta por kWh",
+    editorCurrency: "Moneda",
+    editorCo2: "CO₂ de la red (kg por kWh)",
+    editorChart: "Mostrar gráfico",
+    editorPanels: "Mostrar paneles",
+  },
+  ru: {
+    currency: "₽",
+    hourShort: "ч",
+    minShort: "мин",
+    dayShort: "д",
+    legendPv: "СЭС",
+    legendLoad: "Дом",
+    legendBattery: "АКБ",
+    legendGrid: "Сеть",
+    chartLoading: "Загрузка истории…",
+    chartEmpty: "Для этого периода истории пока нет",
+    chartError: "История недоступна",
+    chartPowerHint: "АКБ: вверх = разряд · Сеть: вверх = потребление из сети",
+    autarky: "Автономность",
+    selfUse: "Самопотребление",
+    savings: "Экономия",
+    co2: "Предотвращено CO₂",
+    specificYield: "Выработка",
+    batteryForecast: "Прогноз АКБ",
+    fullIn: "Зарядится через {d}",
+    fullAt: "около {time}",
+    lastsFor: "Хватит на {d}",
+    lastsUntil: "до {time} (до {soc}%)",
+    batteryHolding: "Без изменений",
+    storedOf: "{kwh} из {cap}",
+    inverterDetails: "Данные инвертора",
+    pvStrings: "Строки PV",
+    stringN: "Строка {n}",
+    temperatures: "Температуры",
+    batteryDetails: "АКБ",
+    gridDetails: "Сеть",
+    noDetails: "Инвертор не передаёт подходящих измерений.",
+    close: "Закрыть",
+    panelsTitle: "Панели",
+    panelsHint: "Выработка оптимизаторов сегодня",
+    panelAvg: "В среднем {kwh} на панель",
+    panelWeak: "Самая слабая: {name}, {pct}% медианы",
+    panelsEven: "Все панели в пределах 15% медианы",
+    editorBatteryCapacity: "Ёмкость АКБ (кВт·ч)",
+    editorBatteryMinSoc: "Резерв АКБ (%)",
+    editorPvCapacity: "Мощность СЭС (кВт)",
+    editorPriceImport: "Цена покупки за кВт·ч",
+    editorPriceExport: "Цена продажи за кВт·ч",
+    editorCurrency: "Валюта",
+    editorCo2: "CO₂ сети (кг на кВт·ч)",
+    editorChart: "Показывать график",
+    editorPanels: "Показывать панели",
+  },
+  vi: {
+    currency: "₫",
+    hourShort: "giờ",
+    minShort: "phút",
+    dayShort: "ngày",
+    legendLoad: "Tải",
+    legendBattery: "Pin",
+    legendGrid: "Lưới",
+    chartLoading: "Đang tải lịch sử…",
+    chartEmpty: "Chưa có lịch sử cho khoảng thời gian này",
+    chartError: "Không có lịch sử",
+    chartPowerHint: "Pin: lên = xả · Lưới: lên = mua điện",
+    autarky: "Tự chủ",
+    selfUse: "Tự tiêu thụ",
+    savings: "Tiết kiệm",
+    co2: "CO₂ tránh được",
+    specificYield: "Sản lượng riêng",
+    batteryForecast: "Dự báo pin",
+    fullIn: "Đầy sau {d}",
+    fullAt: "khoảng {time}",
+    lastsFor: "Đủ dùng {d}",
+    lastsUntil: "đến khoảng {time} (còn {soc}%)",
+    batteryHolding: "Ổn định",
+    storedOf: "{kwh} / {cap}",
+    inverterDetails: "Chi tiết biến tần",
+    pvStrings: "Chuỗi PV",
+    stringN: "Chuỗi {n}",
+    temperatures: "Nhiệt độ",
+    batteryDetails: "Pin",
+    gridDetails: "Lưới",
+    noDetails: "Biến tần không báo phép đo phù hợp.",
+    close: "Đóng",
+    panelsTitle: "Tấm pin",
+    panelsHint: "Sản lượng bộ tối ưu hôm nay",
+    panelAvg: "Trung bình {kwh} mỗi tấm",
+    panelWeak: "Yếu nhất: {name}, {pct}% trung vị",
+    panelsEven: "Mọi tấm trong khoảng 15% trung vị",
+    editorBatteryCapacity: "Dung lượng pin (kWh)",
+    editorBatteryMinSoc: "Mức dự trữ pin (%)",
+    editorPvCapacity: "Công suất PV (kWp)",
+    editorPriceImport: "Giá mua mỗi kWh",
+    editorPriceExport: "Giá bán mỗi kWh",
+    editorCurrency: "Tiền tệ",
+    editorCo2: "CO₂ lưới (kg mỗi kWh)",
+    editorChart: "Hiện biểu đồ",
+    editorPanels: "Hiện tấm pin",
+  },
+};
+for (const language of Object.keys(STRINGS)) {
+  STRINGS[language] = { ...INSIGHT_STRINGS.en, ...INSIGHT_STRINGS[language], ...STRINGS[language] };
+}
+
+function startOfDay(date) {
+  const day = new Date(date);
+  day.setHours(0, 0, 0, 0);
+  return day;
+}
+
+function addDays(date, days) {
+  const day = new Date(date);
+  day.setDate(day.getDate() + days);
+  return day;
+}
+
+function niceStep(range, ticks) {
+  const raw = Math.max(range, 1e-9) / ticks;
+  const magnitude = 10 ** Math.floor(Math.log10(raw));
+  const normalized = raw / magnitude;
+  return (normalized <= 1 ? 1 : normalized <= 2 ? 2 : normalized <= 5 ? 5 : 10) * magnitude;
+}
+
+function positiveNumber(value) {
+  const number = Number.parseFloat(value);
+  return Number.isFinite(number) && number > 0 ? number : null;
+}
+
+function formatDuration(hours, t) {
+  const minutes = Math.max(1, Math.round(hours * 60));
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  if (h >= 48) return `${Math.round(h / 24)} ${t.dayShort}`;
+  return h ? `${h} ${t.hourShort} ${m} ${t.minShort}` : `${m} ${t.minShort}`;
+}
+
+function formatClock(date, locale) {
+  return date.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" });
+}
+
+function formatNumber(value, locale, digits = 1) {
+  return value.toLocaleString(locale, { minimumFractionDigits: digits, maximumFractionDigits: digits });
+}
+
+// Average of the samples in each bucket; a bucket without samples keeps the
+// last known value (the recorder only stores changes). Buckets after `nowMs`
+// stay null so today's chart ends at the current time.
+function bucketHistory(points, startMs, count, bucketMs, nowMs) {
+  const out = new Array(count).fill(null);
+  let index = 0;
+  let last = null;
+  for (let bucket = 0; bucket < count; bucket++) {
+    const from = startMs + bucket * bucketMs;
+    if (from > nowMs) break;
+    const to = from + bucketMs;
+    let sum = 0;
+    let samples = 0;
+    while (index < points.length && points[index][0] < to) {
+      if (points[index][0] >= from) {
+        sum += points[index][1];
+        samples += 1;
+      }
+      last = points[index][1];
+      index += 1;
+    }
+    out[bucket] = samples ? sum / samples : last;
+  }
+  return out;
+}
+
+// history/history_during_period rows: compressed {s, lu (seconds)} or full
+// {state, last_updated}.
+function historyPoints(rows) {
+  const points = [];
+  for (const row of rows || []) {
+    const time = row.lu !== undefined ? row.lu * 1000 : Date.parse(row.last_updated || row.last_changed);
+    const value = Number.parseFloat(row.s ?? row.state);
+    if (Number.isFinite(time) && Number.isFinite(value)) points.push([time, value]);
+  }
+  return points;
+}
+
+function combineSeries(a, b, combine) {
+  if (!a || !b) return null;
+  return a.map((value, i) => (value === null || b[i] === null ? null : combine(value, b[i])));
+}
+
+function linePath(values, x, y) {
+  let path = "";
+  let open = false;
+  values.forEach((value, i) => {
+    if (value === null || value === undefined) {
+      open = false;
+      return;
+    }
+    path += `${open ? "L" : "M"}${x(i).toFixed(1)} ${y(value).toFixed(1)}`;
+    open = true;
+  });
+  return path;
+}
+
+function areaPath(values, x, y, base) {
+  let path = "";
+  let run = [];
+  const flush = () => {
+    if (run.length) {
+      const first = run[0];
+      const lastPoint = run[run.length - 1];
+      path += `M${x(first).toFixed(1)} ${base.toFixed(1)}`;
+      run.forEach((i) => { path += `L${x(i).toFixed(1)} ${y(values[i]).toFixed(1)}`; });
+      path += `L${x(lastPoint).toFixed(1)} ${base.toFixed(1)}Z`;
+    }
+    run = [];
+  };
+  values.forEach((value, i) => {
+    if (value === null || value === undefined) flush();
+    else run.push(i);
+  });
+  flush();
+  return path;
+}
+
+function statStart(value) {
+  return typeof value === "number" ? value : Date.parse(value);
+}
+
 function normalizeLanguage(value) {
   const language = String(value || "").toLowerCase().split(/[-_]/)[0];
   return STRINGS[language] ? language : "en";
@@ -716,6 +1075,8 @@ class DeyeCloudEnergyFlowCard extends HTMLElement {
     this._lastRenderSignature = "";
     this._ctrl = { confirm: null, pending: {}, toast: null, editing: null, draft: "", device: null };
     this._period = null;
+    this._chart = null;
+    this._inverterOpen = false;
   }
 
   static getStubConfig() {
@@ -1103,6 +1464,10 @@ class DeyeCloudEnergyFlowCard extends HTMLElement {
       ? t.periodSince.replace("{date}", periodSince)
       : t.entityDetails;
 
+    const chart = this._config.show_daily === false ? null : this._chartState(stationId, energyPeriod, entities);
+    const panels = this._panelData(stationId);
+    const inverterDevices = this._inverterOpen ? this._inverterReadings(stationId) : null;
+
     const controlDevices = this._controlDevices(stationId);
     const signature = JSON.stringify({
       stationIds,
@@ -1122,6 +1487,12 @@ class DeyeCloudEnergyFlowCard extends HTMLElement {
       ),
       ctrl: this._ctrl,
       energy: [energyPeriod, dailyCards.map((card) => [card[2], card[3]])],
+      chart: chart && [chart.key, chart.fetchedAt, Boolean(chart.loading), Boolean(chart.error)],
+      panels: panels.map((panel) => [panel.today, panel.power]),
+      inverter: inverterDevices && inverterDevices.map((device) => [
+        [...device.strings.values()].map((string) => Object.values(string).map((r) => r.value)),
+        [...device.temperatures, ...device.battery, ...device.grid].map((r) => r.value),
+      ]),
       // Keeps the TOU "now" marker and relative times moving.
       minute: Math.floor(Date.now() / 60000),
     });
@@ -1144,8 +1515,10 @@ class DeyeCloudEnergyFlowCard extends HTMLElement {
       : `<span class="station-id">${escapeHtml(t.station)} ${escapeHtml(stationId)}</span>`;
 
     const animationClass = this._config.animation === false ? "no-animation" : "";
-    const node = ({ className, title, status, value, icon, entityId, badge }) => `
-      <button class="flow-node ${className}" data-entity="${escapeHtml(entityId || "")}" ${entityId ? "" : "disabled"}>
+    const node = ({ className, title, status, value, icon, entityId, badge, action }) => `
+      <button class="flow-node ${className}" ${action
+        ? `data-action="${action}" aria-expanded="${this._inverterOpen}"`
+        : `data-entity="${escapeHtml(entityId || "")}" ${entityId ? "" : "disabled"}`}>
         <span class="node-icon">${icon}</span>
         <span class="node-copy">
           <span class="node-title">${escapeHtml(title)}</span>
@@ -1226,7 +1599,7 @@ class DeyeCloudEnergyFlowCard extends HTMLElement {
                 status: currentAvailable ? t.supplying : t.unavailable,
                 value: formatPower(values.load + values.gridExport + values.batteryCharge, locale),
                 icon: iconInverter(),
-                entityId: entities.load?.entityId || entities.solar?.entityId,
+                action: "inverter",
               })}
             </div>
             <div class="node-slot grid-slot">
@@ -1252,6 +1625,8 @@ class DeyeCloudEnergyFlowCard extends HTMLElement {
           </div>
         </section>
 
+        ${inverterDevices ? this._inverterPanelHtml(inverterDevices, t, locale) : ""}
+
         ${this._config.show_efficiency === false ? "" : `
           <section class="performance-section">
             <div class="efficiency-strip">
@@ -1269,6 +1644,7 @@ class DeyeCloudEnergyFlowCard extends HTMLElement {
                 <i style="width:${clamp(Math.abs(balance) / 20, 4, 100)}%"></i>
               </div>
             </div>
+            ${this._batteryForecastHtml(values, t, locale)}
           </section>`}
 
         ${this._config.show_daily === false ? "" : `
@@ -1286,6 +1662,7 @@ class DeyeCloudEnergyFlowCard extends HTMLElement {
                   aria-checked="${period === energyPeriod}" title="${escapeHtml(periodLabels[period][1])}"
                   data-period="${period}">${escapeHtml(periodLabels[period][0])}</button>`).join("")}
             </div>
+            ${this._chartHtml(chart, t, locale)}
             <div class="daily-grid">
               ${dailyCards.map(([kind, label, value, entityId]) => `
                 <button class="daily-metric ${kind}" data-entity="${escapeHtml(entityId || "")}" ${entityId ? "" : "disabled"}>
@@ -1297,7 +1674,9 @@ class DeyeCloudEnergyFlowCard extends HTMLElement {
                   ${entityId ? '<span class="daily-open" aria-hidden="true">›</span>' : ''}
                 </button>`).join("")}
             </div>
+            ${this._summaryHtml(dailyCards, t, locale)}
           </section>`}
+        ${this._panelsHtml(panels, t, locale)}
         </div>
         ${controlsHtml ? `<div class="side-col">${controlsHtml}</div>` : ""}
         </div>
@@ -1311,6 +1690,15 @@ class DeyeCloudEnergyFlowCard extends HTMLElement {
         this._render();
       });
     }
+
+    this.shadowRoot.querySelectorAll('[data-action="inverter"]').forEach((element) => {
+      element.addEventListener("click", () => {
+        this._inverterOpen = !this._inverterOpen;
+        this._lastRenderSignature = "";
+        this._render();
+      });
+    });
+    this._wireChart(t, locale);
 
     this.shadowRoot.querySelectorAll("[data-period]").forEach((element) => {
       element.addEventListener("click", () => {
@@ -1400,6 +1788,593 @@ class DeyeCloudEnergyFlowCard extends HTMLElement {
         element.style.visibility = length >= size + 12 ? "" : "hidden";
       }
     });
+  }
+
+  // ---------------------------------------------------------------------
+  // Chart: power over the day (24H, 3D) from the recorder history of the
+  // live power sensors, daily/monthly energy bars (7D, month, all) from the
+  // long-term statistics of the Today sensors. Nothing extra is requested
+  // from DeyeCloud.
+  // ---------------------------------------------------------------------
+
+  _chartSpec(period) {
+    const now = new Date();
+    if (period === "today" || period === "3d") {
+      const start = startOfDay(period === "3d" ? addDays(now, -2) : now);
+      const axisEnd = period === "3d" ? now : addDays(start, 1);
+      const bucketMs = (period === "3d" ? 15 : 5) * 60000;
+      const count = Math.max(1, Math.ceil((axisEnd - start) / bucketMs));
+      return { kind: "power", period, start, axisEnd, bucketMs, count, ttl: 5 * 60000 };
+    }
+    if (period === "7d") {
+      return { kind: "energy", period, start: startOfDay(addDays(now, -6)), statPeriod: "day", ttl: 20 * 60000 };
+    }
+    if (period === "month") {
+      const start = startOfDay(now);
+      start.setDate(1);
+      return { kind: "energy", period, start, statPeriod: "day", ttl: 20 * 60000 };
+    }
+    return { kind: "energy", period, start: new Date(2015, 0, 1), statPeriod: "month", ttl: 60 * 60000 };
+  }
+
+  _chartSources(spec, entities) {
+    const id = (entry) => entry?.entityId || null;
+    if (spec.kind === "power") {
+      return {
+        pv: id(entities.solar),
+        load: id(entities.load),
+        battery: id(entities.battery),
+        charge: id(entities.batteryCharge),
+        discharge: id(entities.batteryDischarge),
+        import: id(entities.gridImport),
+        export: id(entities.gridExport),
+        soc: id(entities.soc),
+      };
+    }
+    return {
+      pv: id(entities.solarToday),
+      load: id(entities.loadToday),
+      import: id(entities.gridImportToday),
+      export: id(entities.gridExportToday),
+      charge: id(entities.batteryChargeToday),
+      discharge: id(entities.batteryDischargeToday),
+    };
+  }
+
+  _chartState(stationId, period, entities) {
+    if (this._config.show_chart === false || typeof this._hass?.callWS !== "function") return null;
+    const spec = this._chartSpec(period);
+    const sources = this._chartSources(spec, entities);
+    const ids = [...new Set(Object.values(sources).filter(Boolean))];
+    if (!ids.length) return null;
+    const key = `${stationId}|${period}|${ids.join(",")}`;
+    const current = this._chart?.key === key ? this._chart : null;
+    const stale = !current?.fetchedAt || Date.now() - current.fetchedAt > spec.ttl;
+    if (stale && !current?.loading) this._loadChart(key, spec, sources, ids);
+    return this._chart?.key === key ? this._chart : { key, loading: true };
+  }
+
+  async _loadChart(key, spec, sources, ids) {
+    const previous = this._chart?.key === key ? this._chart : null;
+    this._chart = { ...(previous || {}), key, loading: true };
+    let next;
+    try {
+      const data = spec.kind === "power"
+        ? await this._loadPowerHistory(spec, sources, ids)
+        : await this._loadEnergyStatistics(spec, sources, ids);
+      next = { key, data, fetchedAt: Date.now() };
+    } catch (error) {
+      console.warn("DeyeCloud card: chart data unavailable", error);
+      next = { key, error: true, data: previous?.data, fetchedAt: Date.now() };
+    }
+    if (this._chart?.key !== key) return;
+    this._chart = next;
+    this._lastRenderSignature = "";
+    this._render();
+  }
+
+  async _loadPowerHistory(spec, sources, ids) {
+    const nowMs = Date.now();
+    const response = await this._hass.callWS({
+      type: "history/history_during_period",
+      start_time: spec.start.toISOString(),
+      end_time: new Date(nowMs).toISOString(),
+      entity_ids: ids,
+      minimal_response: true,
+      no_attributes: true,
+      significant_changes_only: false,
+    });
+    const series = {};
+    for (const [name, entityId] of Object.entries(sources)) {
+      series[name] = entityId
+        ? bucketHistory(historyPoints(response?.[entityId]), spec.start.getTime(), spec.count, spec.bucketMs, nowMs)
+        : null;
+    }
+    // Battery: positive = discharging into the home, negative = charging.
+    const battery = series.battery || combineSeries(series.discharge, series.charge, (d, c) => d - c);
+    // Grid: positive = import, negative = export.
+    const grid = combineSeries(series.import, series.export, (i, e) => i - e) || series.import;
+    return {
+      kind: "power",
+      spec,
+      pv: series.pv,
+      load: series.load,
+      battery,
+      grid,
+      soc: series.soc,
+    };
+  }
+
+  async _loadEnergyStatistics(spec, sources, ids) {
+    const response = await this._hass.callWS({
+      type: "recorder/statistics_during_period",
+      start_time: spec.start.toISOString(),
+      end_time: new Date().toISOString(),
+      statistic_ids: ids,
+      period: spec.statPeriod,
+      types: ["change"],
+    });
+    const byStart = new Map();
+    for (const [name, entityId] of Object.entries(sources)) {
+      for (const row of response?.[entityId] || []) {
+        const start = new Date(statStart(row.start));
+        const keyDate = spec.statPeriod === "month"
+          ? `${start.getFullYear()}-${start.getMonth()}`
+          : start.toDateString();
+        const bucket = byStart.get(keyDate) || { start };
+        bucket[name] = Math.max(0, Number(row.change) || 0);
+        byStart.set(keyDate, bucket);
+      }
+    }
+    let buckets;
+    if (spec.statPeriod === "day") {
+      // A fixed day axis, so missing days show as gaps instead of shifting.
+      buckets = [];
+      for (let day = new Date(spec.start); day <= new Date(); day = addDays(day, 1)) {
+        buckets.push(byStart.get(day.toDateString()) || { start: new Date(day) });
+      }
+    } else {
+      buckets = [...byStart.values()].sort((a, b) => a.start - b.start);
+    }
+    return { kind: "energy", spec, buckets };
+  }
+
+  _chartHtml(chart, t, locale) {
+    if (!chart) return "";
+    let body;
+    if (chart.data?.kind === "power" && chart.data.pv?.some((v) => v !== null)) {
+      body = this._powerChartHtml(chart.data, t, locale);
+    } else if (chart.data?.kind === "energy" && chart.data.buckets?.some((b) => b.pv || b.load)) {
+      body = this._energyChartHtml(chart.data, t, locale);
+    } else {
+      const message = chart.loading ? t.chartLoading : chart.error ? t.chartError : t.chartEmpty;
+      body = `<div class="chart-empty">${escapeHtml(message)}</div>`;
+    }
+    return `<div class="chart ${chart.loading ? "loading" : ""}">${body}</div>`;
+  }
+
+  _powerChartHtml(data, t, locale) {
+    const { spec } = data;
+    const W = 1000;
+    const H = 300;
+    const signed = [data.battery, data.grid].filter(Boolean).flat().filter((v) => v !== null);
+    const positive = [data.pv, data.load].filter(Boolean).flat().filter((v) => v !== null);
+    const maxValue = Math.max(100, ...positive, ...signed);
+    const minValue = Math.min(0, ...signed);
+    const step = niceStep(maxValue - minValue, 4);
+    const top = Math.ceil(maxValue / step) * step;
+    const bottom = Math.floor(minValue / step) * step;
+    const y = (v) => H - ((v - bottom) / (top - bottom)) * H;
+    const x = (i) => ((i + 0.5) / spec.count) * W;
+    const zero = y(0);
+    const ticks = [];
+    for (let v = bottom; v <= top + step / 2; v += step) ticks.push(v);
+
+    const xLabels = [];
+    if (spec.period === "today") {
+      for (let hour = 0; hour <= 24; hour += 6) {
+        xLabels.push([hour / 24, `${String(hour).padStart(2, "0")}:00`]);
+      }
+    } else {
+      const span = spec.axisEnd - spec.start;
+      for (let day = new Date(spec.start); day < spec.axisEnd; day = addDays(day, 1)) {
+        xLabels.push([(day - spec.start) / span, day.toLocaleDateString(locale, { weekday: "short" })]);
+      }
+    }
+
+    const socPath = data.soc ? linePath(data.soc, x, (v) => H - (clamp(v, 0, 100) / 100) * H) : "";
+    const legend = [
+      ["pv", t.legendPv, data.pv],
+      ["load", t.legendLoad, data.load],
+      ["battery", t.legendBattery, data.battery],
+      ["grid", t.legendGrid, data.grid],
+      ["soc", t.legendSoc, data.soc],
+    ].filter(([, , series]) => series);
+
+    return `
+      <div class="chart-legend">
+        ${legend.map(([kind, label]) => `<span class="legend ${kind}"><i></i>${escapeHtml(label)}</span>`).join("")}
+      </div>
+      <div class="chart-plot" data-chart-kind="power">
+        <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
+          ${ticks.map((v) => `<line class="grid-line ${v === 0 ? "zero" : ""}" x1="0" x2="${W}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}" />`).join("")}
+          ${data.pv ? `<path class="series-area pv" d="${areaPath(data.pv, x, y, zero)}" />` : ""}
+          ${data.battery ? `<path class="series-area battery" d="${areaPath(data.battery, x, y, zero)}" />` : ""}
+          ${data.pv ? `<path class="series-line pv" d="${linePath(data.pv, x, y)}" />` : ""}
+          ${data.battery ? `<path class="series-line battery" d="${linePath(data.battery, x, y)}" />` : ""}
+          ${data.grid ? `<path class="series-line grid" d="${linePath(data.grid, x, y)}" />` : ""}
+          ${data.load ? `<path class="series-line load" d="${linePath(data.load, x, y)}" />` : ""}
+          ${socPath ? `<path class="series-line soc" d="${socPath}" />` : ""}
+        </svg>
+        ${ticks.map((v) => `<span class="y-label" style="top:${((y(v) / H) * 100).toFixed(2)}%">${escapeHtml(formatPower(v, locale))}</span>`).join("")}
+        <i class="chart-cursor" hidden></i>
+        <div class="chart-tip" hidden></div>
+      </div>
+      <div class="chart-xaxis">
+        ${xLabels.map(([pos, label]) => `<span style="left:${(pos * 100).toFixed(2)}%">${escapeHtml(label)}</span>`).join("")}
+      </div>
+      <p class="chart-hint">${escapeHtml(t.chartPowerHint)}</p>`;
+  }
+
+  _energyChartHtml(data, t, locale) {
+    const { buckets, spec } = data;
+    const W = 1000;
+    const H = 300;
+    const kinds = [["pv", "sun"], ["load", "home"], ["import", "import"]];
+    const maxValue = Math.max(0.1, ...buckets.flatMap((b) => kinds.map(([k]) => b[k] || 0)));
+    const step = niceStep(maxValue, 4);
+    const top = Math.ceil(maxValue / step) * step;
+    const y = (v) => H - (v / top) * H;
+    const groupWidth = W / buckets.length;
+    const barWidth = Math.max(1, (groupWidth * 0.78) / kinds.length);
+    const ticks = [];
+    for (let v = 0; v <= top + step / 2; v += step) ticks.push(v);
+
+    const label = (start, i) => {
+      if (spec.period === "7d") return start.toLocaleDateString(locale, { weekday: "short" });
+      if (spec.period === "month") {
+        const day = start.getDate();
+        return day === 1 || day % 5 === 0 ? String(day) : "";
+      }
+      if (buckets.length <= 12 || start.getMonth() % 3 === 0) {
+        return start.getMonth() === 0 || i === 0
+          ? start.toLocaleDateString(locale, { month: "short", year: "2-digit" })
+          : start.toLocaleDateString(locale, { month: "short" });
+      }
+      return "";
+    };
+
+    return `
+      <div class="chart-legend">
+        <span class="legend pv"><i></i>${escapeHtml(t.solarToday)}</span>
+        <span class="legend load"><i></i>${escapeHtml(t.loadToday)}</span>
+        <span class="legend grid"><i></i>${escapeHtml(t.importToday)}</span>
+      </div>
+      <div class="chart-plot" data-chart-kind="energy">
+        <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
+          ${ticks.map((v) => `<line class="grid-line ${v === 0 ? "zero" : ""}" x1="0" x2="${W}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}" />`).join("")}
+          ${buckets.map((bucket, i) => kinds.map(([kind], k) => {
+            const value = bucket[kind] || 0;
+            const left = i * groupWidth + groupWidth * 0.11 + k * barWidth;
+            return value > 0
+              ? `<rect class="bar ${kind}" x="${left.toFixed(1)}" y="${y(value).toFixed(1)}" width="${(barWidth * 0.9).toFixed(1)}" height="${(H - y(value)).toFixed(1)}" />`
+              : "";
+          }).join("")).join("")}
+        </svg>
+        ${ticks.map((v) => `<span class="y-label" style="top:${((y(v) / H) * 100).toFixed(2)}%">${escapeHtml(formatNumber(v, locale, v < 10 && step < 1 ? 1 : 0))} kWh</span>`).join("")}
+        <i class="chart-cursor" hidden></i>
+        <div class="chart-tip" hidden></div>
+      </div>
+      <div class="chart-xaxis">
+        ${buckets.map((bucket, i) => {
+          const text = label(bucket.start, i);
+          return text ? `<span style="left:${(((i + 0.5) / buckets.length) * 100).toFixed(2)}%">${escapeHtml(text)}</span>` : "";
+        }).join("")}
+      </div>`;
+  }
+
+  _chartTipHtml(data, index, t, locale) {
+    if (data.kind === "power") {
+      const { spec } = data;
+      if (index < 0 || index >= spec.count) return null;
+      const at = new Date(spec.start.getTime() + index * spec.bucketMs);
+      const rows = [
+        ["pv", t.legendPv, data.pv],
+        ["load", t.legendLoad, data.load],
+        ["battery", t.legendBattery, data.battery],
+        ["grid", t.legendGrid, data.grid],
+      ].filter(([, , series]) => series && series[index] !== null);
+      if (!rows.length) return null;
+      const time = spec.period === "today"
+        ? formatClock(at, locale)
+        : `${at.toLocaleDateString(locale, { weekday: "short" })} ${formatClock(at, locale)}`;
+      const soc = data.soc?.[index];
+      return `<strong>${escapeHtml(time)}</strong>
+        ${rows.map(([kind, label, series]) => `<span class="${kind}"><i></i>${escapeHtml(label)}<b>${escapeHtml(formatPower(series[index], locale))}</b></span>`).join("")}
+        ${soc !== null && soc !== undefined ? `<span class="soc"><i></i>${escapeHtml(t.legendSoc)}<b>${escapeHtml(formatPercent(soc, locale))}</b></span>` : ""}`;
+    }
+    const bucket = data.buckets[index];
+    if (!bucket) return null;
+    const title = data.spec.statPeriod === "month"
+      ? bucket.start.toLocaleDateString(locale, { month: "long", year: "numeric" })
+      : bucket.start.toLocaleDateString(locale, { weekday: "short", day: "numeric", month: "short" });
+    const rows = [
+      ["pv", t.solarToday, bucket.pv],
+      ["load", t.loadToday, bucket.load],
+      ["grid", t.importToday, bucket.import],
+      ["export", t.exportToday, bucket.export],
+      ["battery", t.chargeToday, bucket.charge],
+      ["battery", t.dischargeToday, bucket.discharge],
+    ].filter(([, , value]) => value !== undefined);
+    return `<strong>${escapeHtml(title)}</strong>
+      ${rows.map(([kind, label, value]) => `<span class="${kind}"><i></i>${escapeHtml(label)}<b>${escapeHtml(formatEnergy(value, locale))}</b></span>`).join("")}`;
+  }
+
+  _wireChart(t, locale) {
+    const plot = this.shadowRoot.querySelector(".chart-plot");
+    const data = this._chart?.data;
+    if (!plot || !data) return;
+    const cursor = plot.querySelector(".chart-cursor");
+    const tip = plot.querySelector(".chart-tip");
+    const count = data.kind === "power" ? data.spec.count : data.buckets.length;
+    const hide = () => {
+      cursor.hidden = true;
+      tip.hidden = true;
+    };
+    const show = (event) => {
+      const box = plot.getBoundingClientRect();
+      const fraction = clamp((event.clientX - box.left) / box.width, 0, 0.9999);
+      const index = Math.floor(fraction * count);
+      const html = this._chartTipHtml(data, index, t, locale);
+      if (!html) return hide();
+      const left = ((index + 0.5) / count) * 100;
+      cursor.hidden = false;
+      cursor.style.left = `${left}%`;
+      tip.hidden = false;
+      tip.innerHTML = html;
+      tip.classList.toggle("flip", left > 55);
+      tip.style.left = `${left}%`;
+    };
+    plot.addEventListener("pointermove", show);
+    plot.addEventListener("pointerdown", show);
+    plot.addEventListener("pointerleave", hide);
+  }
+
+  // ---------------------------------------------------------------------
+  // Period summary: autarky, self-consumption, savings, CO2 and specific
+  // yield for the selected energy period.
+  // ---------------------------------------------------------------------
+
+  _summaryHtml(dailyCards, t, locale) {
+    const [solar, load, gridImport, gridExport] = dailyCards.map((card) => card[2]);
+    const items = [];
+    if (Number.isFinite(load) && Number.isFinite(gridImport) && load > 0.05) {
+      items.push(["self", t.autarky, formatPercent(clamp(((load - gridImport) / load) * 100, 0, 100), locale)]);
+    }
+    if (Number.isFinite(solar) && Number.isFinite(gridExport) && solar > 0.05) {
+      items.push(["solar", t.selfUse, formatPercent(clamp(((solar - gridExport) / solar) * 100, 0, 100), locale)]);
+    }
+    const priceImport = positiveNumber(this._config.price_import);
+    if (priceImport !== null && Number.isFinite(load) && Number.isFinite(gridImport)) {
+      const priceExport = positiveNumber(this._config.price_export) || 0;
+      const saved = Math.max(0, load - gridImport) * priceImport + (Number.isFinite(gridExport) ? gridExport : 0) * priceExport;
+      const currency = this._config.currency ?? t.currency;
+      items.push(["money", t.savings, `${formatNumber(saved, locale, 2)} ${currency}`.trim()]);
+    }
+    if (Number.isFinite(solar)) {
+      const factor = Number.parseFloat(this._config.co2_factor);
+      const kg = solar * (Number.isFinite(factor) && factor >= 0 ? factor : 0.5);
+      items.push(["co2", t.co2, kg >= 1000 ? `${formatNumber(kg / 1000, locale, 2)} t` : `${formatNumber(kg, locale, kg < 10 ? 1 : 0)} kg`]);
+    }
+    const pvCapacity = positiveNumber(this._config.pv_capacity);
+    if (pvCapacity !== null && Number.isFinite(solar)) {
+      items.push(["yield", t.specificYield, `${formatNumber(solar / pvCapacity, locale, solar / pvCapacity < 10 ? 2 : 0)} kWh/kWp`]);
+    }
+    if (!items.length) return "";
+    return `
+      <div class="period-summary">
+        ${items.map(([kind, label, value]) => `
+          <div class="summary-item ${kind}">
+            <small>${escapeHtml(label)}</small>
+            <strong>${escapeHtml(value)}</strong>
+          </div>`).join("")}
+      </div>`;
+  }
+
+  // ---------------------------------------------------------------------
+  // Battery forecast from SOC, live battery power and the configured
+  // capacity: time to full while charging, time to the reserve while
+  // discharging.
+  // ---------------------------------------------------------------------
+
+  _batteryForecastHtml(values, t, locale) {
+    const capacity = positiveNumber(this._config.battery_capacity);
+    if (capacity === null || !Number.isFinite(values.soc)) return "";
+    const minSoc = clamp(Number.parseFloat(this._config.battery_min_soc ?? 10) || 0, 0, 90);
+    const stored = (clamp(values.soc, 0, 100) / 100) * capacity;
+    let headline = t.batteryHolding;
+    let detail = "";
+    if (values.batteryCharge > 50 && values.soc < 99.5) {
+      const hours = (((100 - values.soc) / 100) * capacity) / (values.batteryCharge / 1000);
+      headline = t.fullIn.replace("{d}", formatDuration(hours, t));
+      detail = t.fullAt.replace("{time}", formatClock(new Date(Date.now() + hours * 3600000), locale));
+    } else if (values.batteryDischarge > 50 && values.soc > minSoc) {
+      const hours = (((values.soc - minSoc) / 100) * capacity) / (values.batteryDischarge / 1000);
+      headline = t.lastsFor.replace("{d}", formatDuration(hours, t));
+      detail = t.lastsUntil
+        .replace("{time}", formatClock(new Date(Date.now() + hours * 3600000), locale))
+        .replace("{soc}", formatNumber(minSoc, locale, 0));
+    }
+    const fill = clamp(values.soc, 0, 100);
+    return `
+      <div class="battery-forecast">
+        <span class="balance-icon battery">${this._miniIcon("charge")}</span>
+        <div class="balance-copy">
+          <span>${escapeHtml(t.batteryForecast)}</span>
+          <small>${escapeHtml(headline)}</small>
+          ${detail ? `<em>${escapeHtml(detail)}</em>` : ""}
+        </div>
+        <strong>${escapeHtml(t.storedOf
+          .replace("{kwh}", formatEnergy(stored, locale))
+          .replace("{cap}", formatEnergy(capacity, locale)))}</strong>
+        <div class="balance-line" aria-hidden="true">
+          <i style="width:${fill}%"></i>
+          <b style="left:${minSoc}%"></b>
+        </div>
+      </div>`;
+  }
+
+  // ---------------------------------------------------------------------
+  // Inverter details: PV strings, temperatures, battery and grid readings
+  // from the inverter's device sensors, opened by tapping the inverter.
+  // ---------------------------------------------------------------------
+
+  _inverterReadings(stationId) {
+    const devices = this._statesForStation(stationId).filter(
+      ([, stateObj]) => stateObj.attributes?.sensor_type === "device"
+    );
+    const inverters = devices.filter(([, s]) => String(s.attributes?.device_type || "").includes("INVERTER"));
+    const source = inverters.length ? inverters : devices;
+    const bySerial = new Map();
+    for (const [entityId, stateObj] of source) {
+      const attrs = stateObj.attributes || {};
+      const key = String(attrs.device_key || "");
+      const value = stateNumber(stateObj);
+      if (!key || value === null) continue;
+      const serial = String(attrs.device_sn || "");
+      const device = bySerial.get(serial) || { serial, strings: new Map(), temperatures: [], battery: [], grid: [] };
+      const unit = stateUnit(stateObj);
+      const reading = { entityId, key, value, unit };
+      const stringMatch = key.match(/PV\s*(\d+)/i);
+      if (stringMatch && ["V", "A", "W", "kW"].includes(unit) && !/total|daily|energy/i.test(key)) {
+        const index = Number(stringMatch[1]);
+        const string = device.strings.get(index) || {};
+        string[unit === "kW" ? "W" : unit] = { ...reading, value: unit === "kW" ? value * 1000 : value };
+        device.strings.set(index, string);
+      } else if (/^(battery|bms|bat)/i.test(key) && ["V", "A", "°C", "W"].includes(unit)) {
+        device.battery.push(reading);
+      } else if (unit === "°C" || /temp/i.test(key)) {
+        device.temperatures.push(reading);
+      } else if ((unit === "Hz" || (unit === "V" && /grid|ac|phase|l\d|ua|ub|uc/i.test(key))) && device.grid.length < 6) {
+        device.grid.push(reading);
+      }
+      bySerial.set(serial, device);
+    }
+    return [...bySerial.values()].filter(
+      (d) => d.strings.size || d.temperatures.length || d.battery.length || d.grid.length
+    );
+  }
+
+  _readingLabel(key) {
+    return key
+      .replace(/([a-z])([A-Z])/g, "$1 $2")
+      .replace(/_/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  _inverterPanelHtml(devices, t, locale) {
+    const reading = (r) => `
+      <button class="reading" data-entity="${escapeHtml(r.entityId)}">
+        <small>${escapeHtml(this._readingLabel(r.key))}</small>
+        <b>${escapeHtml(`${formatNumber(r.value, locale, Math.abs(r.value) < 100 ? 1 : 0)} ${r.unit}`)}</b>
+      </button>`;
+    const group = (title, items) => items.length ? `
+      <div class="detail-group">
+        <h4>${escapeHtml(title)}</h4>
+        <div class="reading-grid">${items.map(reading).join("")}</div>
+      </div>` : "";
+    const content = devices.length ? devices.map((device) => `
+      ${devices.length > 1 ? `<h4 class="device-serial">${escapeHtml(device.serial)}</h4>` : ""}
+      ${device.strings.size ? `
+        <div class="detail-group">
+          <h4>${escapeHtml(t.pvStrings)}</h4>
+          <div class="string-list">
+            ${[...device.strings.entries()].sort((a, b) => a[0] - b[0]).map(([index, s]) => `
+              <button class="string-row" data-entity="${escapeHtml((s.W || s.V || s.A).entityId)}">
+                <span>${escapeHtml(t.stringN.replace("{n}", index))}</span>
+                <b>${escapeHtml(s.W ? formatPower(s.W.value, locale) : "—")}</b>
+                <small>${escapeHtml([s.V && `${formatNumber(s.V.value, locale, 0)} V`, s.A && `${formatNumber(s.A.value, locale, 1)} A`].filter(Boolean).join(" · "))}</small>
+              </button>`).join("")}
+          </div>
+        </div>` : ""}
+      ${group(t.temperatures, device.temperatures)}
+      ${group(t.batteryDetails, device.battery)}
+      ${group(t.gridDetails, device.grid)}`).join("") : `<p class="detail-empty">${escapeHtml(t.noDetails)}</p>`;
+    return `
+      <section class="inverter-panel">
+        <div class="section-heading">
+          <div><span class="section-kicker">${this._miniIcon("balance")}</span><h3>${escapeHtml(t.inverterDetails)}</h3></div>
+          <button type="button" class="link-btn" data-action="inverter">${escapeHtml(t.close)}</button>
+        </div>
+        ${content}
+      </section>`;
+  }
+
+  // ---------------------------------------------------------------------
+  // Panels: one tile per optimizer, shaded by today's production.
+  // ---------------------------------------------------------------------
+
+  _panelData(stationId) {
+    const panels = new Map();
+    for (const [entityId, stateObj] of this._statesForStation(stationId)) {
+      const attrs = stateObj.attributes || {};
+      if (attrs.sensor_type !== "optimizer" || !attrs.device_sn) continue;
+      const panel = panels.get(attrs.device_sn) || { serial: String(attrs.device_sn) };
+      if (attrs.metric_key === "today") {
+        panel.today = stateNumber(stateObj);
+        panel.entityId = entityId;
+      } else if (attrs.metric_key === "power") {
+        panel.power = stateNumber(stateObj);
+      }
+      panels.set(attrs.device_sn, panel);
+    }
+    return [...panels.values()]
+      .filter((panel) => panel.entityId)
+      .sort((a, b) => a.serial.localeCompare(b.serial, undefined, { numeric: true }));
+  }
+
+  _panelsHtml(panels, t, locale) {
+    if (this._config.show_panels === false || !panels.length) return "";
+    const values = panels.map((p) => p.today).filter((v) => v !== null && v !== undefined);
+    const max = Math.max(0.01, ...values);
+    const sorted = [...values].sort((a, b) => a - b);
+    const median = sorted.length ? sorted[Math.floor((sorted.length - 1) / 2)] : 0;
+    const total = values.reduce((sum, v) => sum + v, 0);
+    let weakest = null;
+    panels.forEach((panel, i) => {
+      if (panel.today === null || panel.today === undefined) return;
+      if (!weakest || panel.today < weakest.today) weakest = { ...panel, index: i + 1 };
+    });
+    let note = t.panelsEven;
+    if (median >= 0.05 && weakest && weakest.today < median * 0.85) {
+      note = t.panelWeak
+        .replace("{name}", `#${weakest.index}`)
+        .replace("{pct}", formatNumber((weakest.today / median) * 100, locale, 0));
+    }
+    return `
+      <section class="panels-section">
+        <div class="section-heading">
+          <div><span class="section-kicker">${panels.length}×</span><h3>${escapeHtml(t.panelsTitle)}</h3></div>
+          <span>${escapeHtml(t.panelsHint)}</span>
+        </div>
+        <div class="panel-grid">
+          ${panels.map((panel, i) => {
+            const share = panel.today ? clamp(panel.today / max, 0, 1) : 0;
+            const weak = weakest && median >= 0.05 && panel.serial === weakest.serial && weakest.today < median * 0.85;
+            return `
+              <button class="panel-tile ${weak ? "weak" : ""}" style="--share:${(share * 100).toFixed(0)}%"
+                data-entity="${escapeHtml(panel.entityId)}" title="${escapeHtml(panel.serial)}">
+                <small>#${i + 1}</small>
+                <strong>${escapeHtml(panel.today === null || panel.today === undefined ? "—" : formatNumber(panel.today, locale, 2))}</strong>
+                <span>${escapeHtml(panel.power === null || panel.power === undefined ? "kWh" : formatPower(panel.power, locale))}</span>
+              </button>`;
+          }).join("")}
+        </div>
+        <p class="panels-note ${note === t.panelsEven ? "" : "warn"}">
+          ${escapeHtml(t.panelAvg.replace("{kwh}", formatEnergy(values.length ? total / values.length : null, locale)))} · ${escapeHtml(note)}
+        </p>
+      </section>`;
   }
 
   _renderError(error) {
@@ -2424,6 +3399,230 @@ class DeyeCloudEnergyFlowCard extends HTMLElement {
           word-break: break-word;
         }
 
+        /* ---------------- Chart ---------------- */
+        .chart { margin-bottom: 14px; }
+        .chart.loading .chart-plot { opacity: .55; }
+        .chart-legend { display: flex; flex-wrap: wrap; gap: 6px 12px; margin-bottom: 8px; }
+        .legend { display: inline-flex; align-items: center; gap: 5px; color: var(--deye-muted); font-size: 11px; font-weight: 650; }
+        .legend i, .chart-tip i { width: 9px; height: 9px; border-radius: 3px; background: currentColor; display: inline-block; }
+        .legend.pv i, .chart-tip .pv i { color: var(--deye-solar); }
+        .legend.load i, .chart-tip .load i { color: var(--deye-load); }
+        .legend.battery i, .chart-tip .battery i { color: var(--deye-battery); }
+        .legend.grid i, .chart-tip .grid i { color: var(--deye-grid); }
+        .chart-tip .export i { color: color-mix(in srgb, var(--deye-grid) 55%, var(--deye-muted)); }
+        .legend.soc i, .chart-tip .soc i { color: color-mix(in srgb, var(--deye-battery) 55%, var(--deye-muted)); height: 2px; border-radius: 1px; }
+        .chart-plot {
+          position: relative;
+          height: 190px;
+          margin-left: 44px;
+          touch-action: pan-y;
+          cursor: crosshair;
+        }
+        .chart-plot svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+        .grid-line { stroke: var(--deye-border); stroke-width: 1; vector-effect: non-scaling-stroke; }
+        .grid-line.zero { stroke: color-mix(in srgb, var(--deye-muted) 55%, transparent); }
+        .series-line { fill: none; stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+        .series-line.pv { stroke: var(--deye-solar); }
+        .series-line.load { stroke: var(--deye-load); }
+        .series-line.battery { stroke: var(--deye-battery); stroke-width: 1.5; }
+        .series-line.grid { stroke: var(--deye-grid); stroke-width: 1.5; }
+        .series-line.soc { stroke: color-mix(in srgb, var(--deye-battery) 55%, var(--deye-muted)); stroke-dasharray: 4 4; stroke-width: 1.5; }
+        .series-area.pv { fill: color-mix(in srgb, var(--deye-solar) 22%, transparent); }
+        .series-area.battery { fill: color-mix(in srgb, var(--deye-battery) 20%, transparent); }
+        .bar.pv { fill: var(--deye-solar); }
+        .bar.load { fill: var(--deye-load); }
+        .bar.import { fill: var(--deye-grid); }
+        .y-label {
+          position: absolute;
+          right: calc(100% + 6px);
+          transform: translateY(-50%);
+          color: var(--deye-muted);
+          font-size: 10px;
+          white-space: nowrap;
+        }
+        .chart-xaxis { position: relative; height: 18px; margin: 4px 0 0 44px; }
+        .chart-xaxis span {
+          position: absolute;
+          top: 2px;
+          transform: translateX(-50%);
+          color: var(--deye-muted);
+          font-size: 10px;
+          white-space: nowrap;
+        }
+        .chart-cursor {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          width: 1px;
+          background: color-mix(in srgb, var(--deye-text) 45%, transparent);
+          pointer-events: none;
+        }
+        .chart-tip {
+          position: absolute;
+          top: 4px;
+          z-index: 5;
+          min-width: 150px;
+          margin-left: 10px;
+          padding: 8px 10px;
+          display: grid;
+          gap: 4px;
+          border: 1px solid var(--deye-border);
+          border-radius: 12px;
+          background: color-mix(in srgb, var(--deye-card) 96%, transparent);
+          box-shadow: 0 10px 24px rgba(18, 28, 45, .18);
+          color: var(--deye-text);
+          font-size: 11px;
+          pointer-events: none;
+        }
+        .chart-tip[hidden], .chart-cursor[hidden] { display: none; }
+        .chart-tip.flip { transform: translateX(calc(-100% - 20px)); }
+        .chart-tip strong { font-size: 11px; }
+        .chart-tip span { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 6px; color: var(--deye-muted); }
+        .chart-tip b { color: var(--deye-text); font-weight: 750; }
+        .chart-hint { margin: 2px 0 0; color: var(--deye-muted); font-size: 10px; }
+        .chart-empty {
+          display: grid;
+          place-items: center;
+          height: 120px;
+          border: 1px dashed var(--deye-border);
+          border-radius: 14px;
+          color: var(--deye-muted);
+          font-size: 12px;
+        }
+
+        /* ---------------- Period summary ---------------- */
+        .period-summary {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+          gap: 8px;
+          margin-top: 11px;
+        }
+        .summary-item {
+          min-width: 0;
+          padding: 9px 11px;
+          border-radius: 13px;
+          border: 1px solid color-mix(in srgb, currentColor 18%, var(--deye-border));
+          background: color-mix(in srgb, var(--deye-card) 94%, currentColor 6%);
+          color: var(--deye-grid);
+        }
+        .summary-item.solar, .summary-item.yield { color: var(--deye-solar); }
+        .summary-item.money, .summary-item.co2 { color: var(--deye-battery); }
+        .summary-item small { display: block; color: var(--deye-muted); font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .summary-item strong { display: block; margin-top: 3px; color: var(--deye-text); font-size: 14px; white-space: nowrap; }
+
+        /* ---------------- Battery forecast ---------------- */
+        .battery-forecast {
+          min-width: 0;
+          display: grid;
+          grid-template-columns: auto minmax(0, 1fr) auto;
+          align-items: center;
+          column-gap: 12px;
+          row-gap: 8px;
+          margin-top: 12px;
+          padding: 13px 15px;
+          border: 1px solid color-mix(in srgb, var(--deye-battery) 24%, var(--deye-border));
+          border-radius: 17px;
+          background: color-mix(in srgb, var(--deye-card) 94%, var(--deye-battery-soft) 6%);
+        }
+        .battery-forecast .balance-icon svg { fill: none; }
+        .battery-forecast em { display: block; margin-top: 2px; color: var(--deye-muted); font-size: 10px; font-style: normal; }
+        .battery-forecast > strong { font-size: 14px; white-space: nowrap; }
+        .battery-forecast .balance-line { position: relative; }
+        .battery-forecast .balance-line b {
+          position: absolute;
+          top: -2px;
+          bottom: -2px;
+          width: 2px;
+          background: var(--deye-load);
+          border-radius: 1px;
+        }
+
+        /* ---------------- Inverter details ---------------- */
+        .inverter-node { cursor: pointer; }
+        .inverter-panel, .panels-section {
+          margin: 14px 16px 0;
+          padding: 16px;
+          border: 1px solid var(--deye-border);
+          border-radius: 20px;
+          background: color-mix(in srgb, var(--deye-card) 97%, var(--deye-surface) 3%);
+        }
+        .inverter-panel .section-kicker svg { width: 14px; height: 14px; fill: currentColor; }
+        .link-btn {
+          border: 0;
+          background: none;
+          color: var(--deye-grid);
+          font: inherit;
+          font-size: 12px;
+          font-weight: 700;
+          cursor: pointer;
+        }
+        .detail-group + .detail-group { margin-top: 12px; }
+        .detail-group h4, .device-serial { margin: 0 0 7px; color: var(--deye-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+        .string-list { display: grid; gap: 7px; }
+        .string-row, .reading {
+          min-width: 0;
+          border: 1px solid var(--deye-border);
+          border-radius: 12px;
+          background: color-mix(in srgb, var(--deye-card) 94%, transparent);
+          color: var(--deye-text);
+          font: inherit;
+          text-align: left;
+          cursor: pointer;
+        }
+        .string-row {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          gap: 2px 10px;
+          padding: 9px 12px;
+          border-left: 3px solid var(--deye-solar);
+        }
+        .string-row span { font-size: 12px; font-weight: 700; }
+        .string-row b { grid-row: span 2; align-self: center; font-size: 15px; }
+        .string-row small { color: var(--deye-muted); font-size: 11px; }
+        .reading-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 7px; }
+        .reading { padding: 8px 10px; }
+        .reading small { display: block; color: var(--deye-muted); font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .reading b { display: block; margin-top: 2px; font-size: 13px; }
+        .detail-empty { margin: 0; color: var(--deye-muted); font-size: 12px; }
+
+        /* ---------------- Panels ---------------- */
+        .panels-section { margin-bottom: 18px; }
+        .panel-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 7px; }
+        .panel-tile {
+          position: relative;
+          min-width: 0;
+          padding: 8px 6px;
+          display: grid;
+          justify-items: center;
+          gap: 1px;
+          overflow: hidden;
+          border: 1px solid color-mix(in srgb, var(--deye-solar) 30%, var(--deye-border));
+          border-radius: 11px;
+          background:
+            linear-gradient(0deg, color-mix(in srgb, var(--deye-solar) 18%, transparent) var(--share), transparent var(--share)),
+            color-mix(in srgb, var(--deye-card) 94%, transparent);
+          color: var(--deye-text);
+          font: inherit;
+          cursor: pointer;
+        }
+        .panel-tile.weak { border-color: var(--deye-load); box-shadow: inset 0 0 0 1px var(--deye-load); }
+        .panel-tile small { color: var(--deye-muted); font-size: 10px; font-weight: 700; }
+        .panel-tile strong { font-size: 13px; }
+        .panel-tile span { color: var(--deye-muted); font-size: 10px; }
+        .panels-note { margin: 10px 0 0; color: var(--deye-muted); font-size: 11px; }
+        .panels-note.warn { color: var(--deye-load); }
+
+        @container (min-width: 720px) {
+          .chart-plot { height: 230px; }
+          .performance-section .battery-forecast { grid-column: 1 / -1; }
+        }
+        @container (max-width: 560px) {
+          .chart-plot { height: 160px; margin-left: 38px; }
+          .chart-xaxis { margin-left: 38px; }
+          .inverter-panel, .panels-section { margin-inline: 8px; padding: 12px; }
+          .battery-forecast { padding: 11px 12px; }
+        }
+
         @keyframes flowForward { to { stroke-dashoffset: -42; } }
         @keyframes livePulse {
           0% { box-shadow: 0 0 0 0 color-mix(in srgb, currentColor 35%, transparent); }
@@ -2929,6 +4128,16 @@ class DeyeCloudEnergyFlowCard extends HTMLElement {
   }
 }
 
+// Numeric card options: [config key, label string, input step].
+const EDITOR_NUMBERS = [
+  ["battery_capacity", "editorBatteryCapacity", "0.1"],
+  ["battery_min_soc", "editorBatteryMinSoc", "1"],
+  ["pv_capacity", "editorPvCapacity", "0.1"],
+  ["price_import", "editorPriceImport", "0.01"],
+  ["price_export", "editorPriceExport", "0.01"],
+  ["co2_factor", "editorCo2", "0.01"],
+];
+
 class DeyeCloudEnergyFlowCardEditor extends HTMLElement {
   constructor() {
     super();
@@ -2987,7 +4196,7 @@ class DeyeCloudEnergyFlowCardEditor extends HTMLElement {
         :host { display: block; color: var(--primary-text-color); }
         .editor { display: grid; gap: 16px; padding: 8px 0; }
         label { display: grid; gap: 6px; font-size: 13px; color: var(--secondary-text-color); }
-        input[type="text"], select {
+        input[type="text"], input[type="number"], select {
           width: 100%;
           min-height: 42px;
           padding: 8px 11px;
@@ -3001,6 +4210,7 @@ class DeyeCloudEnergyFlowCardEditor extends HTMLElement {
         .switch-row label { color: var(--primary-text-color); }
         input[type="checkbox"] { width: 19px; height: 19px; accent-color: var(--primary-color); }
         .hint { margin: 0; color: var(--secondary-text-color); font-size: 12px; }
+        .number-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
       </style>
       <div class="editor">
         <label>
@@ -3018,6 +4228,20 @@ class DeyeCloudEnergyFlowCardEditor extends HTMLElement {
         ${this._switch("show_efficiency", t.editorEfficiency, this._config.show_efficiency !== false)}
         ${this._switch("animation", t.editorAnimation, this._config.animation !== false)}
         ${this._switch("show_controls", t.editorControls, this._config.show_controls !== false)}
+        ${this._switch("show_chart", t.editorChart, this._config.show_chart !== false)}
+        ${this._switch("show_panels", t.editorPanels, this._config.show_panels !== false)}
+        <div class="number-grid">
+          ${EDITOR_NUMBERS.map(([key, label, step]) => `
+            <label>
+              <span>${escapeHtml(t[label])}</span>
+              <input id="${key}" type="number" min="0" step="${step}" inputmode="decimal"
+                value="${escapeHtml(this._config[key] ?? "")}" />
+            </label>`).join("")}
+          <label>
+            <span>${escapeHtml(t.editorCurrency)}</span>
+            <input id="currency" type="text" value="${escapeHtml(this._config.currency ?? "")}" placeholder="${escapeHtml(t.currency)}" />
+          </label>
+        </div>
         <p class="hint">${escapeHtml(t.dataHint)}</p>
       </div>`;
 
@@ -3027,11 +4251,20 @@ class DeyeCloudEnergyFlowCardEditor extends HTMLElement {
     this.shadowRoot.getElementById("title")?.addEventListener("change", (event) =>
       this._setValue("title", event.target.value.trim() || undefined)
     );
-    ["show_daily", "show_efficiency", "animation", "show_controls"].forEach((key) => {
+    ["show_daily", "show_efficiency", "animation", "show_controls", "show_chart", "show_panels"].forEach((key) => {
       this.shadowRoot.getElementById(key)?.addEventListener("change", (event) =>
         this._setValue(key, event.target.checked)
       );
     });
+    EDITOR_NUMBERS.forEach(([key]) => {
+      this.shadowRoot.getElementById(key)?.addEventListener("change", (event) => {
+        const value = Number.parseFloat(event.target.value);
+        this._setValue(key, Number.isFinite(value) ? value : undefined);
+      });
+    });
+    this.shadowRoot.getElementById("currency")?.addEventListener("change", (event) =>
+      this._setValue("currency", event.target.value.trim() || undefined)
+    );
   }
 
   _switch(key, label, checked) {
