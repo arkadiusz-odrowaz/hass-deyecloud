@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.7.1
+
+- Polish translation for the Energy Flow card and the setup/options forms (`pl`), also selectable as card language.
+
 ## 2.7.0
 
 - Energy Flow card: the energy section gets period tabs: **24H**, **3D**, **7D**, **Month** and **All**. 3D adds up Today, Yesterday and Day Before; Month uses the current-month sensors.
